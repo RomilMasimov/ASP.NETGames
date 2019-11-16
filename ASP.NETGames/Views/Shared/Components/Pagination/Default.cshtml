@@ -1,0 +1,62 @@
+﻿@model PaginationViewModel
+
+<nav aria-label="Page navigation">
+    <ul class="pagination justify-content-md-end mt-2">
+        <li class="page-item @(Model.Page == 1 ? "disabled" : "")">
+            <a class="page-link"
+               asp-controller="@Model.Controller"
+               asp-action="@Model.Action"
+               asp-all-route-data="@Model.RouteData"
+               asp-route-page="@(Model.Page - 1)">
+                Previous
+            </a>
+        </li>
+        @if (Model.FirstPage != 1)
+        {
+            <li class="page-item">
+                <a class="page-link"
+                   asp-controller="@Model.Controller"
+                   asp-action="@Model.Action"
+                   asp-all-route-data="@Model.RouteData"
+                   asp-route-page="1">
+                    1
+                </a>
+            </li>
+            <li class="page-item gap"><span class="page-link">...</span></li>
+        }
+        @for (int i = Model.FirstPage; i <= Model.LastPage; i++)
+        {
+            <li class="page-item @(i == Model.Page ? "active": "")">
+                <a class="page-link"
+                   asp-controller="@Model.Controller"
+                   asp-action="@Model.Action"
+                   asp-all-route-data="@Model.RouteData"
+                   asp-route-page="@i">
+                    @i
+                </a>
+            </li>
+        }
+        @if (Model.LastPage != Model.PageCount)
+        {
+            <li class="page-item gap"><span class="page-link">...</span></li>
+            <li class="page-item">
+                <a class="page-link"
+                   asp-controller="@Model.Controller"
+                   asp-action="@Model.Action"
+                   asp-all-route-data="@Model.RouteData"
+                   asp-route-page="@Model.PageCount">
+                    @Model.PageCount
+                </a>
+            </li>
+        }
+        <li class="page-item @(Model.Page == Model.PageCount ? "disabled" : "")">
+            <a class="page-link"
+               asp-controller="@Model.Controller"
+               asp-action="@Model.Action"
+               asp-all-route-data="@Model.RouteData"
+               asp-route-page="@(Model.Page + 1)">
+                Next
+            </a>
+        </li>
+    </ul>
+</nav>
