@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ASP.NETGames.Models.ViewModels;
 using ASP.NETGames.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
 
 namespace ASP.NETGames.Controllers
 {
@@ -21,10 +23,15 @@ namespace ASP.NETGames.Controllers
             return View();
         }
 
-        public async Task<IActionResult> GamesAsync()
+        public async Task<IActionResult> GamesAsync(string search, int page = 1)
         {
-            var test = await GamesService.SearchByTitleAsync("gta");
-            return View(test.results);
+            var responce = await GamesService.SearchByTitleAsync(search, page);
+            var model = new GamesViewModel()
+            {
+                Responce = responce,
+                Search = search
+            };
+            return View(model);
         }
     }
 }

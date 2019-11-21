@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace ASP.NETGames.Infrastructure.TagHelpers
 {
     [HtmlTargetElement(Attributes = "platform-name")]
-    public class PlatformIcon : TagHelper
+    public class PlatformIconTagHelper : TagHelper
     {
         public string PlatformName { get; set; }
         public override void Process(TagHelperContext context, TagHelperOutput output)

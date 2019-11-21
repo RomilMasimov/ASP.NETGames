@@ -10,6 +10,8 @@ namespace ASP.NETGames.Models
         public int count { get; set; }
         public string next { get; set; }
         public string previous { get; set; }
+        public int Page { get; set; }
+        public int PageCount { get; set; }
         public IEnumerable<Game> results { get; set; }
         public bool user_platforms { get; set; }
     }
