@@ -1,0 +1,116 @@
+﻿@model GameDetails
+@{
+    ViewData["Title"] = "Details";
+}
+
+<section class="bg-image bg-dark py-5 py-lg-7 px-4 px-lg-0" ya-style="background-color: #343538">
+    <img class="background" src="@Model.background_image" alt="">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-8 order-2 order-md-2 text-center text-md-left">
+                <h1 class="display-5 font-weight-bold text-white">@Model.name</h1>
+                <div class="d-flex d-sm-block flex-column mt-sm-4 pt-2">
+                    @if (Model.clip != null)
+                    {
+                        <a class="btn btn-primary btn-shadow btn-rounded btn-lg" href="@Model.clip?.Youtube" ya-lightbox role="button">
+                            <i class="ya ya-play d-none d-sm-inline mr-1"></i>
+                            Watch Trailer
+                        </a>
+                    }
+                    @if (Model.stores?.Count() > 0)
+                    {
+                        <a class="btn btn-outline-light btn-rounded btn-lg mt-2 mt-sm-0 ml-sm-2" href="@Model.stores.First().url" role="button">
+                            Purchase Now
+                            <i class="ya ya-shopping-cart"></i>
+                        </a>
+                    }
+                </div>
+            </div>
+            @if (Model.rating > 0F)
+            {
+                <div class="col-md-4 order-1 order-md-2 d-flex align-items-md-center justify-content-center justify-content-md-end text-center mb-4 mb-md-0">
+                    <div>
+                        <p class="font-weight-semibold text-white d-none d-md-inline-block">Rating</p>
+                        <a class="easypiechart" href="review-post.html" data-percent="@((int)Math.Round((double)(100 * Model.rating) / 5))" data-scale-color="#e3e3e3" data-bar-color="#5eb404">
+                            <span class="easypiechart-text">@Model.rating</span>
+                        </a>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+<div class="container">
+    <div class="row py-3">
+        <div class="col-lg-8">
+            @if (Model.screenshots?.Count() > 0)
+            {
+                <div class="mt-4 mt-lg-3">
+                    <div class="owl-carousel" ya-carousel>
+                        @foreach (var item in Model.screenshots)
+                        {
+                            <img src="@item.image" alt="">
+                        }
+                    </div>
+                </div>
+            }
+            <div id="about" class="overflow-hidden mt-3">
+                <p class="font-weight-bold font-size-lg">About</p>
+                @Html.Raw(Model.description ?? "No description.")
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="widget widget-game mt-4 mt-lg-3" ya-style="background-color: #343538">
+                <img src="" alt="">
+                <div class="widget-body">
+                    <h3 class="widget-title text-white">@Model.name</h3>
+                    <p class="font-weight-light font-size-md">@Model.released?.ToString()</p>
+                    @if (Model.platforms?.Count() > 0)
+                    {
+                        <h6>Platforms:</h6>
+                        @foreach (var item in Model.platforms)
+                        {
+                            <a class="badge badge-primary mt-1" href="#">@item.platform.Name</a>
+                        }
+                    }
+                    @if (Model.developers?.Count() > 0)
+                    {
+                        <h6 class="mt-4">Developers:</h6>
+                        @foreach (var item in Model.developers)
+                        {
+                            <a class="font-weight-light font-size-md" href="#">@item.name</a>
+                        }
+                    }
+                    @if (Model.publishers?.Count() > 0)
+                    {
+                        <h6 class="mt-4">Publishers:</h6>
+                        @foreach (var item in Model.publishers)
+                        {
+                            <a class="font-weight-light font-size-md" href="#">@item.name</a>
+                        }
+                    }
+                    @if (Model.genres?.Count() > 0)
+                    {
+                        <h6 class="mt-4">Genre:</h6>
+                        @foreach (var item in Model.genres)
+                        {
+                            <a class="font-weight-light font-size-md" href="#">@item.name</a>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/lib/Readmore.js/readmore.min.js"></script>
+    <script>
+        $('#about').readmore({
+            collapsedHeight: 215,
+            moreLink: '<a class="mt-2" style="display: block; width: 100%;" href="#">Read more...</a>',
+            lessLink: '<a href="#">Show less...</a>'
+        });
+    </script>
+}

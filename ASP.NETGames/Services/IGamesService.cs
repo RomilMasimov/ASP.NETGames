@@ -8,7 +8,7 @@ namespace ASP.NETGames.Services
 {
     public interface IGamesService
     {
-        Task<SearchByNameResponce> SearchByTitleAsync(string title, int page = 1, int pageSize = 12);
+        Task<SearchByNameResponce> SearchByTitleAsync(string title, string ordering = "name", int page = 1, int pageSize = 12);
         Task<GameDetails> SearchByIdAsync(int id);
     }
 }

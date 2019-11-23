@@ -1,0 +1,42 @@
+﻿@model GamesViewModel
+
+@{
+    ViewData["Title"] = "Search";
+}
+
+
+<section class="border-bottom-dashed">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center">
+            <form asp-controller="Games" asp-action="Search" method="get" class="form-inline w-100">
+                <h5 class="h6 text-uppercase font-weight-bold mb-0 pl-1 d-block"><i class="ya ya-blocks mr-2"></i> Results <span class="font-weight-normal">(@Model.Responce?.count)</span></h5>
+                <div class="input-group mr-auto ml-md-4 mb-2 mb-md-0 mt-3 mt-md-0">
+                    <input asp-for="Search" class="form-control form-control-inline" placeholder="Search for game...">
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-light border-left-0"><i class="ya ya-search m-0"></i></button>
+                    </div>
+                </div>
+                <div class="dropdown spin">
+                    <select asp-for="Ordering" asp-items="@ViewBag.Ordering" class="form-control" onchange="this.form.submit()"></select>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="container">
+        <div class="row row-md">
+            @foreach (var game in Model.Responce.results)
+            {
+                <partial name="_GameCardPartial" model="@game" />
+            }
+        </div>
+        <vc:pagination controller="Games"
+                       action="Search"
+                       page="@Model.Responce.Page"
+                       page-count="@Model.Responce.PageCount"
+                       route-data="@(new Dictionary<string, string>{ { "Search", Model.Search }, { "Ordering", Model.Ordering} })">
+        </vc:pagination>
+    </div>
+</section>

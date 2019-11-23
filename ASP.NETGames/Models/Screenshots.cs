@@ -9,5 +9,8 @@ namespace ASP.NETGames.Models
     {
         public int id { get; set; }
         public string image { get; set; }
+        public int? width { get; set; }
+        public int? height { get; set; }
+        public bool? is_deleted { get; set; }
     }
 }

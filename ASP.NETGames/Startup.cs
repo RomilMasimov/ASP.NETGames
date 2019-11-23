@@ -29,6 +29,9 @@ namespace ASP.NETGames
             services.AddOptions();
             services.Configure<GamesApiOptions>(options => options.Url = Configuration["GamesApi:Url"]);
 
+            services.AddMemoryCache();
+            services.AddSingleton<IRecentGamesService, RecentGamesService>();
+            services.AddScoped<IFavoriteGamesService, FavoriteGamesService>();
             services.AddScoped<IGamesService, GamesService>();
 
             services.AddHttpClient();
@@ -48,7 +51,7 @@ namespace ASP.NETGames
 
             app.UseEndpoints(configure =>
             {
-                configure.MapControllerRoute("default", "{controller=Home}/{action=Games}/{id?}");
+                configure.MapControllerRoute("default", "{controller=Games}/{action=Index}/{id?}");
             });
         }
     }

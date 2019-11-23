@@ -1,7 +1,47 @@
-﻿
+﻿@model HomeIndexViewModel
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
-
+<section class="p-0 overflow-hidden">
+    <div class="owl-carousel" ya-carousel="autoplay: true;height: true">
+        @foreach (var game in Model.FavoriteGames)
+        {
+            <div class="owl-carousel-item">
+                <img src="@game.background_image" ya-style="opacity: .28" alt="">
+                <div class="owl-caption">
+                    <div class="owl-caption-container">
+                        <h1 class="owl-title">@game.name</h1>
+                        <p class="owl-text text-truncate-2">@game.description_raw</p>
+                        <a asp-controller="Games" asp-action="Details" asp-route-id="@game.id" class="btn btn-primary btn-lg btn-rounded">View Game</a>
+                        <a class="btn btn-outline-light btn-lg btn-rounded ml-2" href="@game.clip.Youtube" ya-lightbox role="button">Watch Trailer</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <!-- end .owl-carousel -->
+</section>
+<section class="py-5 py-md-6">
+    <div class="container">
+        <div class="row">
+            <div class="col-11 col-md-8 text-center mx-auto mb-4">
+                <i class="ya ya-ranking icon"></i>
+                <h2 class="font-weight-bold font-size-lg">Recent Games at Gameforest</h2>
+                @if (Model.RecentGames?.Count() == 0)
+                {
+                    <p class="lead">Now we do not have the latest games. You can browse them.</p>
+                }
+            </div>
+        </div>
+        <div class="row">
+            @foreach (var game in Model.RecentGames)
+            {
+                <partial name="_GameDetailsCardPartial" model="@game" />
+            }
+        </div>
+        <div class="text-center">
+            <a asp-controller="Games" asp-action="Search" class="btn btn-secondary btn-lg mt-3">Browse Games</a>
+        </div>
+    </div>
+</section>

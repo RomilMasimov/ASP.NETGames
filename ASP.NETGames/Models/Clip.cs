@@ -12,6 +12,7 @@ namespace ASP.NETGames.Models
         public Dictionary<ClipResolution, string> clips { get; set; }
         //public Clips clips { get; set; }
         public string video { get; set; }
+        public string Youtube { get => $"https://www.youtube.com/watch?v={video}"; }
         public string preview { get; set; }
     }
 

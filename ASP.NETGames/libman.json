@@ -19,6 +19,11 @@
         "dist/jquery.js",
         "dist/jquery.min.js"
       ]
+    },
+    {
+      "provider": "cdnjs",
+      "library": "Readmore.js@2.2.1",
+      "destination": "wwwroot/lib/Readmore.js/"
     }
   ]
 }

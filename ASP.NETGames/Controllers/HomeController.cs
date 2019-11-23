@@ -11,25 +11,23 @@ namespace ASP.NETGames.Controllers
 {
     public class HomeController : Controller
     {
-        public IGamesService GamesService { get; }
+        public IFavoriteGamesService FavoriteGamesService { get; }
+        public IRecentGamesService RecentGamesService { get; }
 
-        public HomeController(IGamesService gamesService)
+        public HomeController(IFavoriteGamesService favoriteGamesService, IRecentGamesService recentGamesService)
         {
-            GamesService = gamesService;
+            FavoriteGamesService = favoriteGamesService;
+            RecentGamesService = recentGamesService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> IndexAsync()
         {
-            return View();
-        }
-
-        public async Task<IActionResult> GamesAsync(string search, int page = 1)
-        {
-            var responce = await GamesService.SearchByTitleAsync(search, page);
-            var model = new GamesViewModel()
+            var recentGames = RecentGamesService.GetGames();
+            var favoriteGames = await FavoriteGamesService.GetGamesAsync();
+            var model = new HomeIndexViewModel()
             {
-                Responce = responce,
-                Search = search
+                RecentGames = recentGames,
+                FavoriteGames = favoriteGames
             };
             return View(model);
         }
