@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace ASP.NETGames.Models
 {
-    //[JsonConverter(typeof(PlatformJsonConverter))]
     public class Platform
     {
         [JsonPropertyName("id")]

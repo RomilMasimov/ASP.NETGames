@@ -2,19 +2,19 @@
 
 <div class="col-sm-12 col-md-4">
     <div class="card card-sm mb-4">
-        <a asp-controller="Games" asp-action="Details" asp-route-id="@Model.id" class="card-img card-img-lg">
-            <img class="card-img-top" src="@(Model.background_image ?? "N/A")" placeholder-src="/img/game-placeholder.png" alt="@Model.name"/>
+        <a asp-controller="Games" asp-action="Details" asp-route-id="@Model.Id" class="card-img card-img-lg">
+            <img class="card-img-top" src="@(Model.BackgroundImage ?? "N/A")" placeholder-src="/img/game-placeholder.png" alt="@Model.Name"/>
         </a>
         <div class="card-body">
             <h5 class="card-title text-truncate-1">
                 <i class="ya ya-check-circle text-success" data-toggle="tooltip" data-placement="bottom" data-title="Available"></i>
-                <a asp-controller="Games" asp-action="Details" asp-route-id="@Model.id">@Model.name</a>
+                <a asp-controller="Games" asp-action="Details" asp-route-id="@Model.Id">@Model.Name</a>
             </h5>
-            <p class="card-tex text-truncate-3 font-size-md mb-0">@Model.description_raw</p>
+            <p class="card-tex text-truncate-3 font-size-md mb-0">@Model.DescriptionRaw</p>
             <div class="btn-group">
-                @if (Model?.parent_platforms != null)
+                @if (Model?.ParentPlatforms != null)
                 {
-                    foreach (var platform in Model?.parent_platforms)
+                    foreach (var platform in Model?.ParentPlatforms)
                     {
                         <a platform-name="@platform.platform.Slug"
                            class="btn btn-default btn-xs"
@@ -28,16 +28,16 @@
             </div>
         </div>
         <div class="card-footer">
-            @if (!string.IsNullOrWhiteSpace(Model.released))
+            @if (!string.IsNullOrWhiteSpace(Model.Released))
             {
                 <span>
-                    <i class="ya ya-calendar"></i>@Model.released
+                    <i class="ya ya-calendar"></i>@Model.Released
                 </span>
             }
             <div class="ml-auto">
                 <a class="ml-1" href="#">
                     <i class="ya ya-star-o"></i>
-                    @Model.rating
+                    @Model.Rating
                 </a>
             </div>
         </div>

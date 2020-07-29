@@ -44,7 +44,7 @@ namespace ASP.NETGames.Services
             var screenshotsJsonResponse = await screenshotsResponse.Content.ReadAsStringAsync();
             var screenshotsObjectResponse =
                 JsonSerializer.Deserialize<ScreenshotsByIdResponce>(screenshotsJsonResponse);
-            result.screenshots =
+            result.Screenshots =
                 new List<Screenshots>(screenshotsObjectResponse.results ?? Enumerable.Empty<Screenshots>());
 
             _cache.Set($"{id}", result);

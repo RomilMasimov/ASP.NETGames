@@ -18,7 +18,7 @@ namespace ASP.NETGames.Services
 
         public void AddGame(GameDetails game)
         {
-            if (!games.Any(m => m.id == game.id))
+            if (!games.Any(m => m.Id == game.Id))
                 games.Enqueue(game);
 
             if (games.Count > 3)

@@ -8,13 +8,13 @@
         @foreach (var game in Model.FavoriteGames)
         {
             <div class="owl-carousel-item">
-                <img src="@game.background_image" ya-style="opacity: .28" alt="">
+                <img src="@game.BackgroundImage" ya-style="opacity: .28" alt="">
                 <div class="owl-caption">
                     <div class="owl-caption-container">
-                        <h1 class="owl-title">@game.name</h1>
-                        <p class="owl-text text-truncate-2">@game.description_raw</p>
-                        <a asp-controller="Games" asp-action="Details" asp-route-id="@game.id" class="btn btn-primary btn-lg btn-rounded">View Game</a>
-                        <a class="btn btn-outline-light btn-lg btn-rounded ml-2" href="@game.clip.Youtube" ya-lightbox role="button">Watch Trailer</a>
+                        <h1 class="owl-title">@game.Name</h1>
+                        <p class="owl-text text-truncate-2">@game.DescriptionRaw</p>
+                        <a asp-controller="Games" asp-action="Details" asp-route-id="@game.Id" class="btn btn-primary btn-lg btn-rounded">View Game</a>
+                        <a class="btn btn-outline-light btn-lg btn-rounded ml-2" href="@game.Clip.Youtube" ya-lightbox role="button">Watch Trailer</a>
                     </div>
                 </div>
             </div>
