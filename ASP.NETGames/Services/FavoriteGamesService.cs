@@ -8,11 +8,11 @@ namespace ASP.NETGames.Services
 {
     public class FavoriteGamesService : IFavoriteGamesService
     {
-        private readonly IGamesService GamesService;
+        private readonly IGamesService _gamesService;
 
         public FavoriteGamesService(IGamesService gamesService)
         {
-            GamesService = gamesService;
+            _gamesService = gamesService;
         }
 
         public async Task<IEnumerable<GameDetails>> GetGamesAsync()
@@ -21,7 +21,7 @@ namespace ASP.NETGames.Services
             var result = new List<GameDetails>();
             foreach (var id in ids)
             {
-                result.Add(await GamesService.SearchByIdAsync(id));
+                result.Add(await _gamesService.SearchByIdAsync(id));
             }
             return result;
         }

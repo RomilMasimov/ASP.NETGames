@@ -3,7 +3,7 @@
 <div class="col-sm-12 col-md-4">
     <div class="card card-sm mb-4">
         <a asp-controller="Games" asp-action="Details" asp-route-id="@Model.id" class="card-img card-img-lg">
-            <img class="card-img-top" src="@(Model.background_image ?? "N/A")" placeholder-src="/img/game-placeholder.png" alt="@Model.name" />
+            <img class="card-img-top" src="@(Model.background_image ?? "N/A")" placeholder-src="/img/game-placeholder.png" alt="@Model.name"/>
         </a>
         <div class="card-body">
             <h5 class="card-title text-truncate-1">
@@ -30,7 +30,9 @@
         <div class="card-footer">
             @if (!string.IsNullOrWhiteSpace(Model.released))
             {
-                <span><i class="ya ya-calendar"></i>@Model.released</span>
+                <span>
+                    <i class="ya ya-calendar"></i>@Model.released
+                </span>
             }
             <div class="ml-auto">
                 <a class="ml-1" href="#">

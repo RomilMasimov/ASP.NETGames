@@ -15,64 +15,69 @@ namespace ASP.NETGames.Services
 {
     public class GamesService : IGamesService
     {
-        private readonly HttpClient httpClient;
-        private readonly string url;
-        private readonly IMemoryCache cache;
+        private readonly HttpClient _httpClient;
+        private readonly string _url;
+        private readonly IMemoryCache _cache;
 
-        public GamesService(IHttpClientFactory httpClientFactory, IOptions<GamesApiOptions> options, IMemoryCache memoryCache)
+        public GamesService(IHttpClientFactory httpClientFactory, IOptions<GamesApiOptions> options,
+            IMemoryCache memoryCache)
         {
-            this.httpClient = httpClientFactory.CreateClient();
-            this.url = options.Value.Url;
-            cache = memoryCache;
+            this._httpClient = httpClientFactory.CreateClient();
+            this._url = options.Value.Url;
+            _cache = memoryCache;
         }
-        
+
         public async Task<GameDetails> SearchByIdAsync(int id)
         {
-            if (cache.TryGetValue($"{id}", out GameDetails result))
+            if (_cache.TryGetValue(id.ToString(), out GameDetails result))
                 return result;
 
-            var request = $"{url}/games/{id}";
-            var responce = await httpClient.GetAsync(request);
-            var json = await responce.Content.ReadAsStringAsync();
+            var requestUrl = $"{_url}/games/{id}";
+            var response = await _httpClient.GetAsync(requestUrl);
+            var json = await response.Content.ReadAsStringAsync();
 
-            var options = new JsonSerializerOptions();
-            options.Converters.Add(new ConverterDictionaryTKeyEnumTValue());
-            result = JsonSerializer.Deserialize<GameDetails>(json, options);
+            var serializerOptions = new JsonSerializerOptions();
+            serializerOptions.Converters.Add(new ConverterDictionaryTKeyEnumTValue());
+            result = JsonSerializer.Deserialize<GameDetails>(json, serializerOptions);
 
-            var screenshorsRespoce = await httpClient.GetAsync(request + "/screenshots");
-            var screenshorsJsonRespoce = await screenshorsRespoce.Content.ReadAsStringAsync();
-            var screenshorsObjectRespoce = JsonSerializer.Deserialize<ScreenshotsByIdResponce>(screenshorsJsonRespoce);
-            result.screenshots = new List<Screenshots>(screenshorsObjectRespoce.results ?? Enumerable.Empty<Screenshots>());
+            var screenshotsResponse = await _httpClient.GetAsync(requestUrl + "/screenshots");
+            var screenshotsJsonResponse = await screenshotsResponse.Content.ReadAsStringAsync();
+            var screenshotsObjectResponse =
+                JsonSerializer.Deserialize<ScreenshotsByIdResponce>(screenshotsJsonResponse);
+            result.screenshots =
+                new List<Screenshots>(screenshotsObjectResponse.results ?? Enumerable.Empty<Screenshots>());
 
-            cache.Set($"{id}", result);
+            _cache.Set($"{id}", result);
             return result;
         }
 
-        public async Task<SearchByNameResponce> SearchByTitleAsync(string search, string ordering, int page = 1, int pageSize = 12)
+        public async Task<SearchByNameResponce> SearchByTitleAsync(string search, string ordering, int page = 1,
+            int pageSize = 12)
         {
             search = search?.Trim();
-            if (cache.TryGetValue($"s{search}o{ordering}p{page}ps{pageSize}", out SearchByNameResponce result))
+            if (_cache.TryGetValue($"s{search}o{ordering}p{page}ps{pageSize}", out SearchByNameResponce result))
                 return result;
-            
-            var urlSearch = System.Web.HttpUtility.UrlEncode(search);
 
-            string searchQuery = url + "/games";
-            if (!string.IsNullOrWhiteSpace(urlSearch))
-                searchQuery = QueryHelpers.AddQueryString(searchQuery, "search", urlSearch);
-            var request = QueryHelpers.AddQueryString(searchQuery,
-                        new Dictionary<string, string> { { "ordering", ordering ?? "" }, { "page", page.ToString() }, { "page_size", pageSize.ToString() } });
+            var searchUrlValue = System.Web.HttpUtility.UrlEncode(search);
 
-            var response = await httpClient.GetAsync(request);
+            string requestUrl = _url + "/games";
+            if (string.IsNullOrWhiteSpace(searchUrlValue) == false)
+                requestUrl = QueryHelpers.AddQueryString(requestUrl, "search", searchUrlValue);
+            var request = QueryHelpers.AddQueryString(requestUrl,
+                new Dictionary<string, string>
+                    {{"ordering", ordering ?? ""}, {"page", page.ToString()}, {"page_size", pageSize.ToString()}});
+
+            var response = await _httpClient.GetAsync(request);
             var json = await response.Content.ReadAsStringAsync();
 
-            var options = new JsonSerializerOptions();
-            options.Converters.Add(new ConverterDictionaryTKeyEnumTValue());
-            result = JsonSerializer.Deserialize<SearchByNameResponce>(json, options);
+            var serializerOptions = new JsonSerializerOptions();
+            serializerOptions.Converters.Add(new ConverterDictionaryTKeyEnumTValue());
+            result = JsonSerializer.Deserialize<SearchByNameResponce>(json, serializerOptions);
 
             result.Page = page;
-            result.PageCount = (int)Math.Ceiling((double)result.count / 12);
+            result.PageCount = (int) Math.Ceiling((double) result.count / 12);
 
-            cache.Set($"s{search}o{ordering}p{page}ps{pageSize}", result);
+            _cache.Set($"s{search}o{ordering}p{page}ps{pageSize}", result);
             return result;
         }
     }

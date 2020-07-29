@@ -29,7 +29,9 @@
         <div class="card-footer">
             @if (Model.released.HasValue)
             {
-                <span><i class="ya ya-calendar"></i>@Model.released?.ToShortDateString()</span>
+                <span>
+                    <i class="ya ya-calendar"></i>@Model.released?.ToShortDateString()
+                </span>
             }
             <div class="ml-auto">
                 <a class="ml-1" href="#">

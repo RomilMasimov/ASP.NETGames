@@ -1,0 +1,5 @@
+﻿@model Microsoft.AspNetCore.Mvc.Rendering.SelectList
+
+<div class="dropdown spin">
+    <select id="ordering" name="ordering" asp-items="@Model" class="form-control" onchange="this.form.submit()"></select>
+</div>

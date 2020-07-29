@@ -11,52 +11,37 @@ namespace ASP.NETGames.Controllers
 {
     public class GamesController : Controller
     {
-        public IGamesService GamesService { get; }
-        public IRecentGamesService RecentGamesService { get; }
+        private readonly IGamesService _gamesService;
+        private readonly IRecentGamesService _recentGamesService;
 
         public GamesController(IGamesService gamesService, IRecentGamesService recentGamesService)
         {
-            GamesService = gamesService;
-            RecentGamesService = recentGamesService;
+            _gamesService = gamesService;
+            _recentGamesService = recentGamesService;
         }
 
         public IActionResult Index()
         {
-            return RedirectToAction("Search");
+            return RedirectToAction(nameof(Search));
         }
 
-        public async Task<IActionResult> SearchAsync(string search, string ordering, int page = 1)
+        public async Task<IActionResult> Search(string search, string ordering, int page = 1)
         {
-            var responce = await GamesService.SearchByTitleAsync(search, ordering, page);
+            var response = await _gamesService.SearchByTitleAsync(search, ordering, page);
             var model = new GamesViewModel()
             {
-                Responce = responce,
+                Responce = response,
                 Search = search,
                 Ordering = ordering
             };
-            loadDropdown();
             return View(model);
         }
 
         public async Task<IActionResult> Details(int id)
         {
-            var gameDetails = await GamesService.SearchByIdAsync(id);
-            RecentGamesService.AddGame(gameDetails);
+            var gameDetails = await _gamesService.SearchByIdAsync(id);
+            _recentGamesService.AddGame(gameDetails);
             return View(gameDetails);
-        }
-
-        private void loadDropdown()
-        {
-            ViewBag.Ordering = new SelectList(
-                new[] {
-                    new { Name = "Not Sorting", Value = "" },
-                    new { Name = "Rating", Value = "-rating" },
-                    new { Name = "Name", Value = "-name" },
-                    new { Name = "Released", Value = "-released" },
-                    new { Name = "Created", Value = "-created" },
-                    new { Name = "Added", Value = "added" }
-                },
-                "Value", "Name");
         }
     }
 }
